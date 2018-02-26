@@ -49,7 +49,7 @@ $ mvn clean fabric8:deploy -Popenshift
 
 == Interacting with the Booster on a Single-node OpenShift Cluster
 
-To interact with your booster while it's running on a Single-node OpenShift Cluster, you first need to obtain it's URL:
+To interai-------------ct with your booster while it's running on a Single-node OpenShift Cluster, you first need to obtain it's URL:
 
 [source,bash,options="nowrap",subs="attributes+"]
 ----
