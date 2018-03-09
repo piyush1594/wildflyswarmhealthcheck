@@ -1,5 +1,5 @@
 #!/usr/bin/groovy
-@Library('github.com/hrishin/fabric8-pipeline-library@master')
+@Library('github.com/fabric8io/fabric8-pipeline-library@master')
 def canaryVersion = "1.0.${env.BUILD_NUMBER}"
 def utils = new io.fabric8.Utils()
 def stashName = "buildpod.${env.JOB_NAME}.${env.BUILD_NUMBER}".replace('-', '_').replace('/', '_')
@@ -25,9 +25,31 @@ mavenNode {
       }
 
       stage('Rollout to Stage'){
-        unstash stashName
         apply{
           environment = envStage
+        }
+      }
+    }
+  }
+}
+
+if (utils.isCD()){
+  node {
+    stage('Approve'){
+       approve {
+         room = null
+         version = canaryVersion
+         environment = 'Stage'
+       }
+     }
+  }
+
+  clientsNode{
+    container(name: 'clients') {
+      stage('Rollout to Run'){
+        unstash stashName
+        apply{
+          environment = envProd
         }
       }
     }
